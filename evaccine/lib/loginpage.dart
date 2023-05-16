@@ -61,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                         birthDate: "01/01/2000",
                         idNumber: "123456",
                         phoneNumber: "123456789",
-                        address: "Rua do exemplo, 123",
+                        address: "Rua do exemplo, 123", profiles: [],
                       ),
                     ),
                   );

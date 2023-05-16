@@ -1,16 +1,25 @@
 import 'package:evaccine/signuppage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
+import 'adicionarvacinapessoa.dart';
 import 'loginpage.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'eVaccine',
-      home: EvaccinePage(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => EvaccinePage(),
+        '/add_vaccine': (context) => AddVaccinePage(),
+
+      },
     );
   }
 }
@@ -52,3 +61,4 @@ class EvaccinePage extends StatelessWidget {
     );
   }
 }
+
