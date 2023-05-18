@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 enum VaccineStatus {
   administered,
@@ -46,6 +47,21 @@ class _AddVaccinePageState extends State<AddVaccinePage> {
     super.dispose();
   }
 
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1930),
+      lastDate: DateTime.now(),
+    );
+
+    if (picked != null) {
+      setState(() {
+        _expiryController.text = DateFormat('yyyy-MM-dd').format(picked);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,8 +93,18 @@ class _AddVaccinePageState extends State<AddVaccinePage> {
               'Validade:',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            TextField(
-              controller: _expiryController,
+            InkWell(
+              onTap: () {
+                _selectDate(context); // Chame o método para exibir o seletor de data
+              },
+              child: IgnorePointer(
+                child: TextField(
+                  controller: _expiryController,
+                  decoration: InputDecoration(
+                    suffixIcon: Icon(Icons.calendar_today),
+                  ),
+                ),
+              ),
             ),
             SizedBox(height: 10),
             Text(
@@ -120,6 +146,5 @@ class _AddVaccinePageState extends State<AddVaccinePage> {
     );
   }
 }
-
 
 

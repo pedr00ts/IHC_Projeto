@@ -142,7 +142,7 @@ class _SignUpPageState extends State<SignUpPage> {
         useEmoji: true,
       ),
       ignoreBlank: false,
-      autoValidateMode: AutovalidateMode.onUserInteraction,
+      //autoValidateMode: AutovalidateMode.onUserInteraction,
       selectorTextStyle: TextStyle(color: Colors.black),
       initialValue: PhoneNumber(isoCode: 'PT'),
       textFieldController: phoneController,
