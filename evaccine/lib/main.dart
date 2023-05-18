@@ -2,6 +2,7 @@ import 'package:evaccine/signuppage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
+import 'adicionarvacinaanimal.dart';
 import 'adicionarvacinapessoa.dart';
 import 'loginpage.dart';
 
@@ -18,7 +19,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => EvaccinePage(),
-        '/add_vaccine': (context) => AddVaccinePage(),
+        '/add_vaccineH': (context) => AddVaccinePage(),
+        '/add_vaccineA': (context) => AddVaccineAnimalPage(),
 
       },
     );
@@ -36,25 +38,31 @@ class EvaccinePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginPage()),
-                );
-              },
-              child: Text('Entrar'),
+            SizedBox(
+              width: 300, // Largura desejada para os botões
+              height: ,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPage()),
+                  );
+                },
+                child: Text('Entrar'),
+              ),
             ),
-
             SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SignUpPage()),
-                );
-              },
-              child: Text('Inscrever'),
+            SizedBox(
+              width: 300, // Largura desejada para os botões
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SignUpPage()),
+                  );
+                },
+                child: Text('Inscrever'),
+              ),
             ),
           ],
         ),
@@ -62,4 +70,5 @@ class EvaccinePage extends StatelessWidget {
     );
   }
 }
+
 

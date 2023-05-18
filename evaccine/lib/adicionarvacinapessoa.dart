@@ -2,9 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 enum VaccineStatus {
+  choice,
   administered,
   future,
-  overdue,
+  overdue
+}
+
+enum VaccineType{
+  choice,
+  yes,
+  no
 }
 
 class AddVaccinePage extends StatefulWidget {
@@ -16,7 +23,8 @@ class _AddVaccinePageState extends State<AddVaccinePage> {
   TextEditingController _nameController = TextEditingController();
   TextEditingController _lotController = TextEditingController();
   TextEditingController _expiryController = TextEditingController();
-  VaccineStatus _selectedStatus = VaccineStatus.administered;
+  VaccineStatus _selectedStatus = VaccineStatus.choice;
+  VaccineType _selectedType = VaccineType.choice;
 
   void _addVaccine() {
     showDialog(
@@ -120,6 +128,10 @@ class _AddVaccinePageState extends State<AddVaccinePage> {
               },
               items: [
                 DropdownMenuItem(
+                  value: VaccineStatus.choice,
+                  child: Text('--escolha a opção--'),
+                ),
+                DropdownMenuItem(
                   value: VaccineStatus.administered,
                   child: Text('Administrada'),
                 ),
@@ -130,6 +142,32 @@ class _AddVaccinePageState extends State<AddVaccinePage> {
                 DropdownMenuItem(
                   value: VaccineStatus.overdue,
                   child: Text('Atrasada'),
+                ),
+              ],
+            ),
+            Text(
+              'Pertence ao Plano Nacional de Saúde:',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            DropdownButton<VaccineType>(
+              value: _selectedType,
+              onChanged: (newValue) {
+                setState(() {
+                  _selectedType = newValue!;
+                });
+              },
+              items: [
+                DropdownMenuItem(
+                  value: VaccineType.choice,
+                  child: Text('--escolha a opção--'),
+                ),
+                DropdownMenuItem(
+                  value: VaccineType.yes,
+                  child: Text('Sim'),
+                ),
+                DropdownMenuItem(
+                  value: VaccineType.no,
+                  child: Text('Não'),
                 ),
               ],
             ),

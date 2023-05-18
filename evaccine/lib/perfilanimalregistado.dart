@@ -1,3 +1,4 @@
+import 'package:evaccine/vacinasanimais.dart';
 import 'package:evaccine/vacinashumanas.dart';
 import 'package:flutter/material.dart';
 
@@ -123,7 +124,7 @@ class PerfilAnimalRegistado extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => VaccinesPage()),
+                  MaterialPageRoute(builder: (context) => VaccinesAnimalPage()),
                 );
               },
               child: Text('Vacinas'),
