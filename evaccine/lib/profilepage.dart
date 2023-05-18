@@ -31,7 +31,7 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Perfil do usuário'),
+          title: Text('Perfil de $name'),
         ),
         drawer: Drawer(
           child: ListView(
