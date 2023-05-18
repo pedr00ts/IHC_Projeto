@@ -17,7 +17,7 @@ class ProfilePage extends StatelessWidget {
   final String address;
   final List<CustomProfilePage> profiles; // Lista de perfis adicionados
 
-  ProfilePage({
+  const ProfilePage({super.key,
     required this.email,
     required this.name,
     required this.birthDate,

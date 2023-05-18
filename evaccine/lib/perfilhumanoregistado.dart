@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'adicionarperfilfamiliapage.dart';
 import 'adicionarperfilfanimalpage.dart';
+import 'widget/profile_widget.dart';
 
 class PerfilHumanoRegistado extends StatelessWidget {
   final String name;
@@ -25,7 +26,7 @@ class PerfilHumanoRegistado extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Perfil Humano Registrado'),
+        title: Text('Perfil do usuário'),
       ),
       drawer: Drawer(
         child: ListView(
@@ -49,10 +50,9 @@ class PerfilHumanoRegistado extends StatelessWidget {
               ),
             ),
             ...profiles.map(
-                  (profile) =>
-                  ListTile(
-                    title: Text(profile),
-                  ),
+                  (profile) => ListTile(
+                title: Text(profile),
+              ),
             ),
             ListTile(
               title: ElevatedButton(
@@ -110,28 +110,30 @@ class PerfilHumanoRegistado extends StatelessWidget {
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            ProfileWidget(
+              imagePath: 'https://via.placeholder.com/150',
+              onClicked: () async {},
+            ),
+            SizedBox(height: 20),
             Text(
-              'Nome: $name',
+              name,
+              style: TextStyle(fontSize: 20),
+            ),
+            SizedBox(height: 10),
+            Text(
+              'Informações adicionais:',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            Text(
-              'Data de Nascimento: $birthDate',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              'Número de Utente: $idNumber',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              'Número de Telemóvel: $phoneNumber',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              'Morada: $address',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
+            SizedBox(height: 10),
+            Text('Data de nascimento: $birthDate'),
+            SizedBox(height: 5),
+            Text('Número de identificação: $idNumber'),
+            SizedBox(height: 5),
+            Text('Número de telefone: $phoneNumber'),
+            SizedBox(height: 5),
+            Text('Endereço: $address'),
             SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
