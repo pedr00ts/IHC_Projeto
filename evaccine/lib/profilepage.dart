@@ -1,8 +1,12 @@
 import 'package:evaccine/vacinashumanas.dart';
 import 'package:flutter/material.dart';
 
+
 import 'adicionarperfilfamiliapage.dart';
 import 'adicionarperfilfanimalpage.dart';
+import 'customprofilepage.dart';
+import 'profiledetailspage.dart';
+import 'widget/profile_widget.dart';
 
 class ProfilePage extends StatelessWidget {
   final String email;
@@ -11,7 +15,7 @@ class ProfilePage extends StatelessWidget {
   final String idNumber;
   final String phoneNumber;
   final String address;
-  final List<String> profiles; // Lista de perfis adicionados
+  final List<CustomProfilePage> profiles; // Lista de perfis adicionados
 
   ProfilePage({
     required this.email,
@@ -51,9 +55,27 @@ class ProfilePage extends StatelessWidget {
                 ),
               ),
               ...profiles.map(
-                    (profile) => ListTile(
-                  title: Text(profile),
-                ),
+                    (profile) => /*ListTile(
+                title: Text(profile),
+              ),*/
+                    ListView.builder(
+                      itemCount: profiles.length,
+                      itemBuilder: (context, index) {
+                        CustomProfilePage page = profiles[index];
+                        return ListTile(
+                          title: Text(page.name),
+                          onTap: () {
+                            // Navigate to the selected page
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProfileDetailsPage(page),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    )
               ),
               ListTile(
                 title: ElevatedButton(
@@ -103,12 +125,16 @@ class ProfilePage extends StatelessWidget {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-          CircleAvatar(
+          /*CircleAvatar(
           radius: 60,
           backgroundImage: NetworkImage(
             'https://via.placeholder.com/150', // Imagem de perfil padrão
           ),
-        ),
+        ),*/
+            ProfileWidget(
+              imagePath: 'https://via.placeholder.com/150',
+              onClicked: () async {},
+            ),
         SizedBox(height: 20),
         Text(
           name,
@@ -144,11 +170,11 @@ class ProfilePage extends StatelessWidget {
             ),
           ],
         ),
-      floatingActionButton: FloatingActionButton(
+      /*floatingActionButton: FloatingActionButton(
         onPressed: () {},
         tooltip: 'Alterar foto de perfil',
         child: Icon(Icons.photo_camera),
-      ),
+      ),*/
     );
   }
 }

@@ -1,6 +1,8 @@
 import 'package:evaccine/profilepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:intl/intl.dart'; //para as datas
+import 'package:intl_phone_number_input/intl_phone_number_input.dart'; // para n telm
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -26,6 +28,21 @@ class _SignUpPageState extends State<SignUpPage> {
         isKeyboardVisible = visible;
       });
     });
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1930),
+      lastDate: DateTime.now(),
+    );
+
+    if (picked != null) {
+      setState(() {
+        dobController.text = DateFormat('yyyy-MM-dd').format(picked);
+      });
+    }
   }
 
   @override
@@ -80,11 +97,22 @@ class _SignUpPageState extends State<SignUpPage> {
     ),
     ),
     SizedBox(height: 8.0),
-    TextField(
+    /*TextField(
     controller: dobController,
     decoration: InputDecoration(
     hintText: 'Data de Nascimento',
     ),
+    ), */
+    TextField(
+      controller: dobController,
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode()); // Remove any existing focus
+        _selectDate(context);
+      },
+      decoration: InputDecoration(
+        suffixIcon: Icon(Icons.calendar_today),
+        hintText: 'Data de Nascimento',
+      ),
     ),
     SizedBox(height: 8.0),
     TextField(
@@ -93,12 +121,35 @@ class _SignUpPageState extends State<SignUpPage> {
     hintText: 'Número de utente',
     ),
     ),
-    SizedBox(height: 8.0),
+    SizedBox(height: 20),
+    /*
     TextField(
     controller: phoneController,
     decoration: InputDecoration(
     hintText: 'Número de telemóvel',
     ),
+    ),*/
+    InternationalPhoneNumberInput(
+      //selectorType: PhoneNumberSelectorType.DIALOG,
+      onInputChanged: (PhoneNumber number) {
+        print(number.phoneNumber);
+      },
+      onInputValidated: (bool value) {
+        // Update the UI or perform any other necessary actions based on the validation status.
+      },
+      selectorConfig: SelectorConfig(
+        selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+        useEmoji: true,
+      ),
+      ignoreBlank: false,
+      autoValidateMode: AutovalidateMode.onUserInteraction,
+      selectorTextStyle: TextStyle(color: Colors.black),
+      initialValue: PhoneNumber(isoCode: 'PT'),
+      textFieldController: phoneController,
+      formatInput: true,
+      keyboardType: TextInputType.phone,
+      inputBorder: OutlineInputBorder(),
+      hintText: 'Número de telemóvel',
     ),
     SizedBox(height: 8.0),
     TextField(

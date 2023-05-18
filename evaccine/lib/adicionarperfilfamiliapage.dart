@@ -1,5 +1,8 @@
+import 'package:evaccine/customprofilepage.dart';
 import 'package:evaccine/perfilhumanoregistado.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart'; //para as datas
+import 'package:intl_phone_number_input/intl_phone_number_input.dart'; // para n telm
 
 class NewFamilyProfilePage extends StatefulWidget {
   @override
@@ -22,6 +25,13 @@ class _NewFamilyProfilePageState extends State<NewFamilyProfilePage> {
     String idNumber = _idNumberController.text;
     String phoneNumber = _phoneNumberController.text;
     String address = _addressController.text;
+
+    CustomProfilePage newPage = CustomProfilePage(name: name, birthDate: birthDate, idNumber: idNumber, phoneNumber: phoneNumber, address: address, profiles: profiles);
+
+    // Add the new page to the list
+    setState(() {
+      profiles.add(newPage);
+    });
 
     // Navegue para a página "PerfilHumanoRegistado" passando os dados como argumentos
     Navigator.push(
@@ -48,6 +58,25 @@ class _NewFamilyProfilePageState extends State<NewFamilyProfilePage> {
     super.dispose();
   }
 
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1930),
+      lastDate: DateTime.now(),
+    );
+
+    if (picked != null) {
+      setState(() {
+        _birthDateController.text = DateFormat('yyyy-MM-dd').format(picked);
+      });
+    }
+
+
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,6 +102,13 @@ class _NewFamilyProfilePageState extends State<NewFamilyProfilePage> {
             ),
             TextField(
               controller: _birthDateController,
+              onTap: () {
+                FocusScope.of(context).requestFocus(FocusNode()); // Remove any existing focus
+                _selectDate(context);
+              },
+              decoration: InputDecoration(
+                suffixIcon: Icon(Icons.calendar_today),
+              ),
             ),
             SizedBox(height: 10),
             Text(
@@ -87,8 +123,31 @@ class _NewFamilyProfilePageState extends State<NewFamilyProfilePage> {
               'Número de Telemóvel:',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            TextField(
+            SizedBox(height: 10),
+            /*TextField(
               controller: _phoneNumberController,
+            ),*/
+            InternationalPhoneNumberInput(
+              //selectorType: PhoneNumberSelectorType.DIALOG,
+              onInputChanged: (PhoneNumber number) {
+                print(number.phoneNumber);
+              },
+              onInputValidated: (bool value) {
+                // Update the UI or perform any other necessary actions based on the validation status.
+              },
+              selectorConfig: SelectorConfig(
+                selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+                useEmoji: true,
+              ),
+              ignoreBlank: false,
+              autoValidateMode: AutovalidateMode.onUserInteraction,
+              selectorTextStyle: TextStyle(color: Colors.black),
+              initialValue: PhoneNumber(isoCode: 'PT'),
+              textFieldController: _idNumberController,
+              formatInput: true,
+              keyboardType: TextInputType.phone,
+              inputBorder: OutlineInputBorder(),
+              hintText: 'Número de telemóvel',
             ),
             SizedBox(height: 10),
             Text(
