@@ -1,25 +1,100 @@
 import 'package:flutter/material.dart';
 import 'package:evaccine/adicionarvacinapessoa.dart';
 
+enum StatusVacina {
+  todas,
+  administrada,
+  futura,
+  atraso,
+}
+
 class Vacina {
   final String nome;
-  final String status;
+  final StatusVacina status;
 
   Vacina({required this.nome, required this.status});
 }
 
-class VaccinesPage extends StatelessWidget {
+class VaccinesPage extends StatefulWidget {
+  @override
+  _VaccinesPageState createState() => _VaccinesPageState();
+}
+
+class _VaccinesPageState extends State<VaccinesPage> {
   final List<Vacina> planoNacional = [
-    Vacina(nome: 'Vacina 1', status: 'Administrada'),
-    Vacina(nome: 'Vacina 2', status: 'Futura'),
-    Vacina(nome: 'Vacina 3', status: 'Atraso'),
+    Vacina(nome: 'Vacina 1', status: StatusVacina.administrada),
+    Vacina(nome: 'Vacina 2', status: StatusVacina.futura),
+    Vacina(nome: 'Vacina 3', status: StatusVacina.atraso),
   ]; // Lista de vacinas do Plano Nacional de Saúde
 
   final List<Vacina> outrasVacinas = [
-    Vacina(nome: 'Vacina 4', status: 'Administrada'),
-    Vacina(nome: 'Vacina 5', status: 'Futura'),
-    Vacina(nome: 'Vacina 6', status: 'Atraso'),
+    Vacina(nome: 'Vacina 4', status: StatusVacina.administrada),
+    Vacina(nome: 'Vacina 5', status: StatusVacina.futura),
+    Vacina(nome: 'Vacina 6', status: StatusVacina.atraso),
   ]; // Lista de outras vacinas
+
+  List<Vacina> vacinasFiltradasPlanoNacional = [];
+  List<Vacina> vacinasFiltradasOutras = [];
+  StatusVacina statusSelecionado = StatusVacina.todas;
+
+  @override
+  void initState() {
+    super.initState();
+    filtrarVacinas();
+  }
+
+  void filtrarVacinas() {
+    setState(() {
+      if (statusSelecionado == StatusVacina.todas) {
+        vacinasFiltradasPlanoNacional = [...planoNacional];
+        vacinasFiltradasOutras = [...outrasVacinas];
+      } else {
+        vacinasFiltradasPlanoNacional = planoNacional
+            .where((vacina) => vacina.status == statusSelecionado)
+            .toList();
+        vacinasFiltradasOutras = outrasVacinas
+            .where((vacina) => vacina.status == statusSelecionado)
+            .toList();
+      }
+    });
+  }
+
+  String getStatusVacina(StatusVacina status) {
+    switch (status) {
+      case StatusVacina.administrada:
+        return 'Administrada';
+      case StatusVacina.futura:
+        return 'Futura';
+      case StatusVacina.atraso:
+        return 'Atraso';
+      default:
+        return '';
+    }
+  }
+
+  void uploadVacinasSNS(BuildContext context) async {
+    // Simulando uma espera de 2 segundos para buscar as informações do SNS
+    await Future.delayed(Duration(seconds: 2));
+
+    // Exibindo uma mensagem de sucesso ao finalizar o "upload" das vacinas do SNS
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Upload de Vacinas do SNS'),
+          content: Text('Vacinas do SNS foram importadas com sucesso!'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,71 +102,127 @@ class VaccinesPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Vacinas'),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              'Vacinas do Plano Nacional de Saúde',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Vacinas do Plano Nacional de Saúde',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.grey,
+                        width: 1.0,
+                      ),
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: DropdownButton<StatusVacina>(
+                      value: statusSelecionado,
+                      dropdownColor: Colors.blue, // Altere a cor aqui
+                      onChanged: (value) {
+                        setState(() {
+                          statusSelecionado = value!;
+                          filtrarVacinas();
+                        });
+                      },
+                      items: [
+                        DropdownMenuItem<StatusVacina>(
+                          value: StatusVacina.todas,
+                          child: Text('Todas'),
+                        ),
+                        DropdownMenuItem<StatusVacina>(
+                          value: StatusVacina.administrada,
+                          child: Text('Administradas'),
+                        ),
+                        DropdownMenuItem<StatusVacina>(
+                          value: StatusVacina.futura,
+                          child: Text('Futuras'),
+                        ),
+                        DropdownMenuItem<StatusVacina>(
+                          value: StatusVacina.atraso,
+                          child: Text('Atraso'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: planoNacional.length,
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: vacinasFiltradasPlanoNacional.length,
               itemBuilder: (context, index) {
-                Vacina vacina = planoNacional[index];
+                Vacina vacina = vacinasFiltradasPlanoNacional[index];
                 return Card(
                   child: ListTile(
                     title: Text(vacina.nome),
-                    subtitle: Text(vacina.status),
+                    subtitle: Text(getStatusVacina(vacina.status)),
                   ),
                 );
               },
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              'Outras Vacinas',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+            SizedBox(height: 16),
+            FloatingActionButton.extended(
+              onPressed: () {
+                uploadVacinasSNS(context);
+              },
+              label: Text('Upload de Vacinas do SNS'),
+              icon: Icon(Icons.upload),
+            ),
+            SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Outras Vacinas',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: outrasVacinas.length,
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: vacinasFiltradasOutras.length,
               itemBuilder: (context, index) {
-                Vacina vacina = outrasVacinas[index];
+                Vacina vacina = vacinasFiltradasOutras[index];
                 return Card(
                   child: ListTile(
                     title: Text(vacina.nome),
-                    subtitle: Text(vacina.status),
+                    subtitle: Text(getStatusVacina(vacina.status)),
                   ),
                 );
               },
             ),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AddVaccinePage()),
-          );
-        },
-        label: Text('Adicionar Vacina'),
-        icon: Icon(Icons.add),
+            SizedBox(height: 16),
+            FloatingActionButton.extended(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddVaccinePage()),
+                );
+              },
+              label: Text('Adicionar Vacina'),
+              icon: Icon(Icons.add),
+            ),
+          ],
+        ),
       ),
     );
   }
+
 }
 
 

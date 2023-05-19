@@ -21,7 +21,6 @@ class MyApp extends StatelessWidget {
         '/': (context) => EvaccinePage(),
         '/add_vaccineH': (context) => AddVaccinePage(),
         '/add_vaccineA': (context) => AddVaccineAnimalPage(),
-
       },
     );
   }
@@ -34,41 +33,51 @@ class EvaccinePage extends StatelessWidget {
       appBar: AppBar(
         title: Text('eVaccine'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: 300, // Largura desejada para os botões
-              height: ,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginPage()),
-                  );
-                },
-                child: Text('Entrar'),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/vaccine.jpg'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 300, // Largura desejada para os botões
+                height: 100,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginPage()),
+                    );
+                  },
+                  child: Text('ENTRAR'),
+                ),
               ),
-            ),
-            SizedBox(height: 16),
-            SizedBox(
-              width: 300, // Largura desejada para os botões
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SignUpPage()),
-                  );
-                },
-                child: Text('Inscrever'),
+              SizedBox(height: 16),
+              SizedBox(
+                width: 300, // Largura desejada para os botões
+                height: 100,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SignUpPage()),
+                    );
+                  },
+                  child: Text('INSCREVER'),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 }
+
 
 
