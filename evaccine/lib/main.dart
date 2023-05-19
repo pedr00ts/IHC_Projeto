@@ -1,3 +1,4 @@
+import 'package:evaccine/profilepage.dart';
 import 'package:evaccine/signuppage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => EvaccinePage(),
         '/add_vaccineH': (context) => AddVaccinePage(),
         '/add_vaccineA': (context) => AddVaccineAnimalPage(),
+        '/mudar_perfilA': (context) => ProfilePage(email: '', name: '', birthDate: '', idNumber: '', phoneNumber: '', address: '', profiles: [],),
       },
     );
   }

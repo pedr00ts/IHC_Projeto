@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'adicionarperfilfamiliapage.dart';
 import 'adicionarperfilfanimalpage.dart';
 import 'customprofilepage.dart';
+import 'mudarPerfil.dart';
 import 'profiledetailspage.dart';
 import 'widget/profile_widget.dart';
 
@@ -53,6 +54,28 @@ class ProfilePage extends StatelessWidget {
                   'Família',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
+              ),
+              ListTile(
+                title: Text(
+                  'Maria Luisa Oliveira',
+                  style: TextStyle(fontSize: 18),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MudarPerfilPage(
+                        email: 'marialuisa@gmail.com',
+                        name: 'Maria Luisa Oliveira',
+                        birthDate: '12/03/1987',
+                        idNumber: '123456789',
+                        phoneNumber: '9123456789',
+                        address: 'Lisboa',
+                        profiles: [],
+                      ),
+                    ),
+                  );
+                },
               ),
               ...profiles.map(
                     (profile) => /*ListTile(

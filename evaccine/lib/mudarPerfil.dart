@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 import 'adicionarperfilfamiliapage.dart';
 import 'adicionarperfilfanimalpage.dart';
-import 'mudarPerfil.dart';
 import 'widget/profile_widget.dart';
 
 class Profile {
@@ -14,7 +13,7 @@ class Profile {
   Profile({required this.name, required this.route});
 }
 
-class PerfilHumanoRegistado extends StatelessWidget {
+class MudarPerfilPage extends StatelessWidget {
   final String name;
   final String birthDate;
   final String idNumber;
@@ -22,13 +21,14 @@ class PerfilHumanoRegistado extends StatelessWidget {
   final String address;
   final List<Profile> profiles; // Lista de perfis adicionados
 
-  PerfilHumanoRegistado({
+  MudarPerfilPage({
     required this.name,
     required this.birthDate,
     required this.idNumber,
     required this.phoneNumber,
     required this.address,
     required this.profiles,
+    required String email,
   });
 
   @override
@@ -68,15 +68,15 @@ class PerfilHumanoRegistado extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => MudarPerfilPage(
-                  email: 'marialuisa@gmail.com',
-                  name: 'Maria Luisa Oliveira',
-                  birthDate: '12/03/1987',
-                  idNumber: '123456789',
-                  phoneNumber: '9123456789',
-                  address: 'Lisboa',
-                  profiles: [],
-                ),
-                ),
+                      email: 'marialuisa@gmail.com',
+                      name: 'Maria Luisa Oliveira',
+                      birthDate: '12/03/1987',
+                      idNumber: '123456789',
+                      phoneNumber: '9123456789',
+                      address: 'Lisboa',
+                      profiles: [],
+                    ),
+                  ),
                 );
               },
             ),
@@ -210,6 +210,3 @@ class PerfilHumanoRegistado extends StatelessWidget {
     );
   }
 }
-
-
-
