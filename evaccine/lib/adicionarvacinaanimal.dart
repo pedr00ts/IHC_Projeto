@@ -1,3 +1,4 @@
+import 'package:evaccine/vaccineAnimalAdiconada.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -19,25 +20,29 @@ TextEditingController _expiryController = TextEditingController();
 VaccineStatus _selectedStatus = VaccineStatus.administered;
 
 void _addVaccine() {
-showDialog(
-context: context,
-builder: (BuildContext context) {
-return AlertDialog(
-title: Text('Sucesso'),
-content: Text('A vacina foi adicionada com sucesso.'),
-actions: [
-ElevatedButton(
-onPressed: () {
-Navigator.pop(context); // Fecha o AlertDialog
-Navigator.pop(context); // Retorna para a página anterior
-},
-child: Text('Fechar'),
-),
-],
-);
-},
-);
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Sucesso'),
+        content: Text('A vacina foi adicionada com sucesso.'),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context); // Fecha o AlertDialog
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => VaccinesAnimalAdicionadaPage()),
+              ); // Navega para a nova página
+            },
+            child: Text('Fechar'),
+          ),
+        ],
+      );
+    },
+  );
 }
+
 
 @override
 void dispose() {

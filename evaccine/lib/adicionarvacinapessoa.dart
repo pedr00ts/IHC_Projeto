@@ -1,3 +1,4 @@
+import 'package:evaccine/vacinasaposadicionar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -37,7 +38,10 @@ class _AddVaccinePageState extends State<AddVaccinePage> {
             ElevatedButton(
               onPressed: () {
                 Navigator.pop(context); // Fecha o AlertDialog
-                Navigator.pop(context); // Retorna para a página anterior
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => VaccinesAdicionaPage()),
+                ); // Navega para a nova página
               },
               child: Text('Fechar'),
             ),
@@ -46,6 +50,7 @@ class _AddVaccinePageState extends State<AddVaccinePage> {
       },
     );
   }
+
 
   @override
   void dispose() {

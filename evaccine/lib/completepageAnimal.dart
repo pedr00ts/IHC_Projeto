@@ -1,3 +1,4 @@
+import 'package:evaccine/profilepage.dart';
 import 'package:evaccine/vacinasanimais.dart';
 import 'package:evaccine/vacinasanimalaposinscrever.dart';
 import 'package:evaccine/vacinashumanas.dart';
@@ -5,21 +6,20 @@ import 'package:flutter/material.dart';
 
 import 'adicionarperfilfamiliapage.dart';
 import 'adicionarperfilfanimalpage.dart';
-import 'completepageAnimal.dart';
 import 'completepageHumano.dart';
-import 'mudarPerfil.dart';
 import 'widget/profile_widget.dart';
 
-class PerfilAnimalRegistado extends StatelessWidget {
+class CompletePageAnimal extends StatelessWidget {
   final String petName;
   final String chipNumber;
   final String petAddress;
 
-  PerfilAnimalRegistado({
+  CompletePageAnimal({
     required this.petName,
     required this.chipNumber,
     required this.petAddress,
   });
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +78,7 @@ class PerfilAnimalRegistado extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CompletePageHumano(
+                    builder: (context) =>CompletePageHumano(
                       email: '',
                       name: 'Joao Oliveira',
                       birthDate: '24/12/2022',
@@ -192,7 +192,7 @@ class PerfilAnimalRegistado extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => VaccinesAnimalVaziaPage()),
+                  MaterialPageRoute(builder: (context) => VaccinesAnimalPage()),
                 );
               },
               child: Text('Vacinas'),

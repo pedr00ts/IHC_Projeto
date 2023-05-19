@@ -1,6 +1,8 @@
 import 'package:evaccine/profilepage.dart';
 import 'package:flutter/material.dart';
 
+import 'completepageHumano.dart';
+
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -55,13 +57,14 @@ class _LoginPageState extends State<LoginPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ProfilePage(
-                        email: emailController.text,
-                        name: "Nome do usuário",
-                        birthDate: "01/01/2000",
-                        idNumber: "123456",
-                        phoneNumber: "123456789",
-                        address: "Rua do exemplo, 123", profiles: [],
+                      builder: (context) => CompletePageHumano(
+                        email: 'marialuisa@gmail.com',
+                        name: 'Maria Luisa Oliveira',
+                        birthDate: '12/03/1987',
+                        idNumber: '123456789',
+                        phoneNumber: '9123456789',
+                        address: 'Lisboa',
+                        profiles: [],
                       ),
                     ),
                   );

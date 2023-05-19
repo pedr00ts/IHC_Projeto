@@ -1,30 +1,42 @@
-import 'package:evaccine/vacinasanimais.dart';
-import 'package:evaccine/vacinasanimalaposinscrever.dart';
+import 'package:evaccine/profilepage.dart';
 import 'package:evaccine/vacinashumanas.dart';
 import 'package:flutter/material.dart';
 
 import 'adicionarperfilfamiliapage.dart';
 import 'adicionarperfilfanimalpage.dart';
 import 'completepageAnimal.dart';
-import 'completepageHumano.dart';
-import 'mudarPerfil.dart';
 import 'widget/profile_widget.dart';
 
-class PerfilAnimalRegistado extends StatelessWidget {
-  final String petName;
-  final String chipNumber;
-  final String petAddress;
+class Profile {
+  final String name;
+  final String route;
 
-  PerfilAnimalRegistado({
-    required this.petName,
-    required this.chipNumber,
-    required this.petAddress,
+  Profile({required this.name, required this.route});
+}
+
+class CompletePageHumano extends StatelessWidget {
+  final String name;
+  final String birthDate;
+  final String idNumber;
+  final String phoneNumber;
+  final String address;
+  final List<Profile> profiles; // Lista de perfis adicionados
+
+  CompletePageHumano({
+    required this.name,
+    required this.birthDate,
+    required this.idNumber,
+    required this.phoneNumber,
+    required this.address,
+    required this.profiles,
+    required String email,
   });
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Perfil de $petName'),
+        title: Text('Perfil de $name'),
       ),
       drawer: Drawer(
         child: ListView(
@@ -78,7 +90,7 @@ class PerfilAnimalRegistado extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CompletePageHumano(
+                    builder: (context) =>CompletePageHumano(
                       email: '',
                       name: 'Joao Oliveira',
                       birthDate: '24/12/2022',
@@ -175,7 +187,7 @@ class PerfilAnimalRegistado extends StatelessWidget {
             ),
             SizedBox(height: 20),
             Text(
-              petName,
+              name,
               style: TextStyle(fontSize: 20),
             ),
             SizedBox(height: 10),
@@ -183,16 +195,22 @@ class PerfilAnimalRegistado extends StatelessWidget {
               'Informações adicionais:',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
+            SizedBox(height: 10),
+            Text('Data de nascimento: $birthDate'),
             SizedBox(height: 5),
-            Text('Número do Chip: $chipNumber'),
+            Text('Número de identificação: $idNumber'),
             SizedBox(height: 5),
-            Text('Endereço: $petAddress'),
+            Text('Número de telefone: $phoneNumber'),
+            SizedBox(height: 5),
+            Text('Endereço: $address'),
             SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => VaccinesAnimalVaziaPage()),
+                  MaterialPageRoute(
+                    builder: (context) => VaccinesPage(),
+                  ),
                 );
               },
               child: Text('Vacinas'),

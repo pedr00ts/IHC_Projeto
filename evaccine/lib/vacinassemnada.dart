@@ -1,3 +1,4 @@
+import 'package:evaccine/vacinasaposUpload.dart';
 import 'package:flutter/material.dart';
 import 'package:evaccine/adicionarvacinapessoa.dart';
 
@@ -15,49 +16,16 @@ class Vacina {
   Vacina({required this.nome, required this.status});
 }
 
-class VaccinesPage extends StatefulWidget {
+class VaccinesVaziasPage extends StatefulWidget {
   @override
-  _VaccinesPageState createState() => _VaccinesPageState();
+  _VaccinesVaziasPageState createState() => _VaccinesVaziasPageState();
 }
 
-class _VaccinesPageState extends State<VaccinesPage> {
-  final List<Vacina> planoNacional = [
-    Vacina(nome: 'Vacina 1', status: StatusVacina.administrada),
-    Vacina(nome: 'Vacina 2', status: StatusVacina.futura),
-    Vacina(nome: 'Vacina 3', status: StatusVacina.atraso),
-  ]; // Lista de vacinas do Plano Nacional de Saúde
-
-  final List<Vacina> outrasVacinas = [
-    Vacina(nome: 'Vacina 4', status: StatusVacina.administrada),
-    Vacina(nome: 'Vacina 5', status: StatusVacina.futura),
-    Vacina(nome: 'Vacina 6', status: StatusVacina.atraso),
-  ]; // Lista de outras vacinas
+class _VaccinesVaziasPageState extends State<VaccinesVaziasPage> {
 
   List<Vacina> vacinasFiltradasPlanoNacional = [];
   List<Vacina> vacinasFiltradasOutras = [];
   StatusVacina statusSelecionado = StatusVacina.todas;
-
-  @override
-  void initState() {
-    super.initState();
-    filtrarVacinas();
-  }
-
-  void filtrarVacinas() {
-    setState(() {
-      if (statusSelecionado == StatusVacina.todas) {
-        vacinasFiltradasPlanoNacional = [...planoNacional];
-        vacinasFiltradasOutras = [...outrasVacinas];
-      } else {
-        vacinasFiltradasPlanoNacional = planoNacional
-            .where((vacina) => vacina.status == statusSelecionado)
-            .toList();
-        vacinasFiltradasOutras = outrasVacinas
-            .where((vacina) => vacina.status == statusSelecionado)
-            .toList();
-      }
-    });
-  }
 
   String getStatusVacina(StatusVacina status) {
     switch (status) {
@@ -87,6 +55,10 @@ class _VaccinesPageState extends State<VaccinesPage> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => VaccinesUploadPage()),
+                );
               },
               child: Text('OK'),
             ),
@@ -95,6 +67,7 @@ class _VaccinesPageState extends State<VaccinesPage> {
       },
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +106,6 @@ class _VaccinesPageState extends State<VaccinesPage> {
                       onChanged: (value) {
                         setState(() {
                           statusSelecionado = value!;
-                          filtrarVacinas();
                         });
                       },
                       items: [
@@ -223,6 +195,3 @@ class _VaccinesPageState extends State<VaccinesPage> {
     );
   }
 }
-
-
-

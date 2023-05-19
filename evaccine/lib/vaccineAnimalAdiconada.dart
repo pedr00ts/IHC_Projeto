@@ -1,30 +1,36 @@
-import 'package:evaccine/vacinasanimais.dart';
-import 'package:evaccine/vacinasanimalaposinscrever.dart';
-import 'package:evaccine/vacinashumanas.dart';
+import 'package:evaccine/perfilanimalregistado.dart';
 import 'package:flutter/material.dart';
+import 'package:evaccine/adicionarvacinaanimal.dart';
 
 import 'adicionarperfilfamiliapage.dart';
 import 'adicionarperfilfanimalpage.dart';
-import 'completepageAnimal.dart';
-import 'completepageHumano.dart';
 import 'mudarPerfil.dart';
-import 'widget/profile_widget.dart';
 
-class PerfilAnimalRegistado extends StatelessWidget {
-  final String petName;
-  final String chipNumber;
-  final String petAddress;
+class VaccinesAnimalAdicionadaPage extends StatefulWidget {
+  @override
+  _VaccinesAnimalAdicionadaPageState createState() =>
+      _VaccinesAnimalAdicionadaPageState();
+}
 
-  PerfilAnimalRegistado({
-    required this.petName,
-    required this.chipNumber,
-    required this.petAddress,
-  });
+enum VaccineStatus {
+  todas,
+  administrada,
+  futura,
+  atraso,
+}
+
+class _VaccinesAnimalAdicionadaPageState
+    extends State<VaccinesAnimalAdicionadaPage> {
+  VaccineStatus selectedStatus = VaccineStatus.todas;
+  List<String> vaccineStatus = [
+    'Administrada'
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Perfil de $petName'),
+        title: Text('Vacinas'),
       ),
       drawer: Drawer(
         child: ListView(
@@ -56,7 +62,7 @@ class PerfilAnimalRegistado extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CompletePageHumano(
+                    builder: (context) => MudarPerfilPage(
                       email: 'marialuisa@gmail.com',
                       name: 'Maria Luisa Oliveira',
                       birthDate: '12/03/1987',
@@ -78,7 +84,7 @@ class PerfilAnimalRegistado extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CompletePageHumano(
+                    builder: (context) => MudarPerfilPage(
                       email: '',
                       name: 'Joao Oliveira',
                       birthDate: '24/12/2022',
@@ -120,7 +126,7 @@ class PerfilAnimalRegistado extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CompletePageAnimal(
+                    builder: (context) => PerfilAnimalRegistado(
                       petName: 'Bobby',
                       chipNumber: '56781239',
                       petAddress: 'Lisboa',
@@ -164,42 +170,75 @@ class PerfilAnimalRegistado extends StatelessWidget {
           ],
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ProfileWidget(
-              imagePath: 'https://via.placeholder.com/150',
-              onClicked: () async {},
+      body: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.all(16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Filtrar por:',
+                  style: TextStyle(fontSize: 18),
+                ),
+                DropdownButton<VaccineStatus>(
+                  value: selectedStatus,
+                  onChanged: (VaccineStatus? newValue) {
+                    if (newValue != null) {
+                      setState(() {
+                        selectedStatus = newValue;
+                      });
+                    }
+                  },
+                  items: VaccineStatus.values.map((VaccineStatus status) {
+                    return DropdownMenuItem<VaccineStatus>(
+                      value: status,
+                      child: Text(status.toString().split('.').last),
+                    );
+                  }).toList(),
+                ),
+              ],
             ),
-            SizedBox(height: 20),
-            Text(
-              petName,
-              style: TextStyle(fontSize: 20),
-            ),
-            SizedBox(height: 10),
-            Text(
-              'Informações adicionais:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 5),
-            Text('Número do Chip: $chipNumber'),
-            SizedBox(height: 5),
-            Text('Endereço: $petAddress'),
-            SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => VaccinesAnimalVaziaPage()),
-                );
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: vaccineStatus.length,
+              itemBuilder: (context, index) {
+                if (selectedStatus == VaccineStatus.todas ||
+                    (selectedStatus == VaccineStatus.administrada &&
+                        vaccineStatus[index] == 'Administrada') ||
+                    (selectedStatus == VaccineStatus.atraso &&
+                        vaccineStatus[index] == 'Atraso') ||
+                    (selectedStatus == VaccineStatus.futura &&
+                        vaccineStatus[index] == 'Futura')) {
+                  return Card(
+                    child: ListTile(
+                      title: Text('Vacina ${index + 1}'),
+                      subtitle: Text(vaccineStatus[index]),
+                    ),
+                  );
+                }
+                return Container();
               },
-              child: Text('Vacinas'),
             ),
-          ],
-        ),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => AddVaccineAnimalPage()));
+        },
+        label: Text('Adicionar Vacina'),
+        icon: Icon(Icons.add),
       ),
     );
   }
 }
+
+
+
+
+

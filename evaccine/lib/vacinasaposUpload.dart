@@ -15,23 +15,17 @@ class Vacina {
   Vacina({required this.nome, required this.status});
 }
 
-class VaccinesPage extends StatefulWidget {
+class VaccinesUploadPage extends StatefulWidget {
   @override
-  _VaccinesPageState createState() => _VaccinesPageState();
+  _VaccinesUploadPageState createState() => _VaccinesUploadPageState();
 }
 
-class _VaccinesPageState extends State<VaccinesPage> {
+class _VaccinesUploadPageState extends State<VaccinesUploadPage> {
   final List<Vacina> planoNacional = [
     Vacina(nome: 'Vacina 1', status: StatusVacina.administrada),
     Vacina(nome: 'Vacina 2', status: StatusVacina.futura),
     Vacina(nome: 'Vacina 3', status: StatusVacina.atraso),
   ]; // Lista de vacinas do Plano Nacional de Saúde
-
-  final List<Vacina> outrasVacinas = [
-    Vacina(nome: 'Vacina 4', status: StatusVacina.administrada),
-    Vacina(nome: 'Vacina 5', status: StatusVacina.futura),
-    Vacina(nome: 'Vacina 6', status: StatusVacina.atraso),
-  ]; // Lista de outras vacinas
 
   List<Vacina> vacinasFiltradasPlanoNacional = [];
   List<Vacina> vacinasFiltradasOutras = [];
@@ -47,12 +41,8 @@ class _VaccinesPageState extends State<VaccinesPage> {
     setState(() {
       if (statusSelecionado == StatusVacina.todas) {
         vacinasFiltradasPlanoNacional = [...planoNacional];
-        vacinasFiltradasOutras = [...outrasVacinas];
       } else {
         vacinasFiltradasPlanoNacional = planoNacional
-            .where((vacina) => vacina.status == statusSelecionado)
-            .toList();
-        vacinasFiltradasOutras = outrasVacinas
             .where((vacina) => vacina.status == statusSelecionado)
             .toList();
       }
@@ -223,6 +213,3 @@ class _VaccinesPageState extends State<VaccinesPage> {
     );
   }
 }
-
-
-

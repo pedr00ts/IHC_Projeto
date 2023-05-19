@@ -1,4 +1,6 @@
+import 'package:evaccine/vacinasaposUpload.dart';
 import 'package:evaccine/vacinashumanas.dart';
+import 'package:evaccine/vacinassemnada.dart';
 import 'package:flutter/material.dart';
 
 
@@ -186,7 +188,7 @@ class ProfilePage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => VaccinesPage()),
+                  MaterialPageRoute(builder: (context) => VaccinesVaziasPage()),
                 );
               },
               child: Text('Vacinas'),
