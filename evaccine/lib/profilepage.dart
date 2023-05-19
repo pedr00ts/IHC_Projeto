@@ -64,7 +64,7 @@ class ProfilePage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MudarPerfilPage(
+                      builder: (context) => ProfilePage(
                         email: 'marialuisa@gmail.com',
                         name: 'Maria Luisa Oliveira',
                         birthDate: '12/03/1987',
