@@ -1,8 +1,35 @@
+import 'package:evaccine/perfilanimalregistado.dart';
 import 'package:flutter/material.dart';
 import 'package:evaccine/adicionarvacinaanimal.dart';
 
-class VaccinesAnimalVaziaPage extends StatelessWidget {
+import 'adicionarperfilfamiliapage.dart';
+import 'adicionarperfilfanimalpage.dart';
+import 'main.dart';
+import 'mudarPerfil.dart';
 
+class VaccinesAnimalVaziaPage extends StatefulWidget {
+  @override
+  _VaccinesAnimalVaziaPageState createState() =>
+      _VaccinesAnimalVaziaPageState();
+}
+
+enum VaccineStatus {
+  todas,
+  administrada,
+  futura,
+  atraso,
+}
+
+class _VaccinesAnimalVaziaPageState
+    extends State<VaccinesAnimalVaziaPage> {
+  VaccineStatus selectedStatus = VaccineStatus.todas;
+  final List<String> vaccineStatus = [
+    'Atraso',
+    'Administrada',
+    'Futura',
+    'Atraso',
+    'Administrada'
+  ]; // Exemplo de lista de status de vacinas
 
   @override
   Widget build(BuildContext context) {
@@ -10,9 +37,211 @@ class VaccinesAnimalVaziaPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Vacinas'),
       ),
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text(
+                'Menu',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              title: Text(
+                'Família',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+            ListTile(
+              title: Text(
+                'Maria Luisa Oliveira',
+                style: TextStyle(fontSize: 18),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MudarPerfilPage(
+                      email: 'marialuisa@gmail.com',
+                      name: 'Maria Luisa Oliveira',
+                      birthDate: '12/03/1987',
+                      idNumber: '123456789',
+                      phoneNumber: '9123456789',
+                      address: 'Lisboa',
+                      profiles: [],
+                    ),
+                  ),
+                );
+              },
+            ),
+            ListTile(
+              title: Text(
+                'Joao Oliveira',
+                style: TextStyle(fontSize: 18),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MudarPerfilPage(
+                      email: '',
+                      name: 'Joao Oliveira',
+                      birthDate: '24/12/2022',
+                      idNumber: '234234234',
+                      phoneNumber: '912345678',
+                      address: 'Lisboa',
+                      profiles: [],
+                    ),
+                  ),
+                );
+              },
+            ),
+            ListTile(
+              title: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => NewFamilyProfilePage(),
+                    ),
+                  );
+                },
+                child: Text('Adicionar Perfil'),
+              ),
+            ),
+            Divider(),
+            ListTile(
+              title: Text(
+                'Animais de Estimação',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+            ListTile(
+              title: Text(
+                'Bobby',
+                style: TextStyle(fontSize: 18),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PerfilAnimalRegistado(
+                      petName: 'Bobby',
+                      chipNumber: '56781239',
+                      birthDay: '16/05/2022',
+                      petAddress: 'Lisboa',
+                    ),
+                  ),
+                );
+              },
+            ),
+            ListTile(
+              title: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => NewAnimalProfilePage(),
+                    ),
+                  );
+                },
+                child: Text('Adicionar Perfil'),
+              ),
+            ),
+            Divider(),
+            ListTile(
+              title: Text(
+                'Definição',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+            ListTile(
+              title: Text(
+                'Ajuda',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+            ListTile(
+              title: Text(
+                'Enviar feedback',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+            ListTile(
+              title: Text(
+                'Terminar Sessão',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EvaccinePage(
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+      body: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.all(16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Filtrar por:',
+                  style: TextStyle(fontSize: 18),
+                ),
+                DropdownButton<VaccineStatus>(
+                  value: selectedStatus,
+                  onChanged: (VaccineStatus? newValue) {
+                    if (newValue != null) {
+                      setState(() {
+                        selectedStatus = newValue;
+                      });
+                    }
+                  },
+                  items: [
+                    DropdownMenuItem<VaccineStatus>(
+                      value: VaccineStatus.todas,
+                      child: Text('Todas'),
+                    ),
+                    DropdownMenuItem<VaccineStatus>(
+                      value: VaccineStatus.administrada,
+                      child: Text('Administradas'),
+                    ),
+                    DropdownMenuItem<VaccineStatus>(
+                      value: VaccineStatus.futura,
+                      child: Text('Futuras'),
+                    ),
+                    DropdownMenuItem<VaccineStatus>(
+                      value: VaccineStatus.atraso,
+                      child: Text('Atraso'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+  ]
+            ),
+
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => AddVaccineAnimalPage()));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => AddVaccineAnimalPage()));
         },
         label: Text('Adicionar Vacina'),
         icon: Icon(Icons.add),

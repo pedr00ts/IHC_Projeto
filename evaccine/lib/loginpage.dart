@@ -11,6 +11,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -20,64 +21,100 @@ class _LoginPageState extends State<LoginPage> {
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Bem-vindo de volta!',
-              style: TextStyle(
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold,
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Bem-vindo de volta!',
+                style: TextStyle(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            SizedBox(height: 16.0),
-            TextField(
-              controller: emailController,
-              decoration: InputDecoration(
-                hintText: 'Email',
+              SizedBox(height: 16.0),
+              Padding(
+                padding: EdgeInsets.only(bottom: 8.0),
+                child: Text(
+                  'Email:',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
               ),
-            ),
-            SizedBox(height: 8.0),
-            TextField(
-              controller: passwordController,
-              obscureText: true,
-              decoration: InputDecoration(
-                hintText: 'Palavra-passe',
+              TextFormField(
+                controller: emailController,
+                decoration: InputDecoration(
+                  hintText: 'Email',
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Campo obrigatório';
+                  }
+                  if (!value.contains('@')) {
+                    return 'Email inválido';
+                  }
+                  return null;
+                },
               ),
-            ),
-            SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: () {
-                // Adicione aqui a lógica para autenticar o usuário
-                // ...
+              SizedBox(height: 8.0),
+              Padding(
+                padding: EdgeInsets.only(bottom: 8.0),
+                child: Text(
+                  'Palavra-passe:',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ),
+              TextFormField(
+                controller: passwordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  hintText: 'Palavra-passe',
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Campo obrigatório';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 16.0),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      // Adicione aqui a lógica para autenticar o usuário
+                      // ...
 
-                // Se o usuário estiver autenticado com sucesso, navegue para a página de perfil
-                bool isValidUser = true;
-                if (isValidUser) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CompletePageHumano(
-                        email: 'marialuisa@gmail.com',
-                        name: 'Maria Luisa Oliveira',
-                        birthDate: '12/03/1987',
-                        idNumber: '123456789',
-                        phoneNumber: '9123456789',
-                        address: 'Lisboa',
-                        profiles: [],
-                      ),
-                    ),
-                  );
-                } else {
-                  // exibir mensagem de erro
-                }
-              },
-              child: Text('Entrar'),
-            ),
-
-          ],
+                      // Se o usuário estiver autenticado com sucesso, navegue para a página de perfil
+                      bool isValidUser = true;
+                      if (isValidUser) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CompletePageHumano(
+                              email: 'marialuisa@gmail.com',
+                              name: 'Maria Luisa Oliveira',
+                              birthDate: '12/03/1987',
+                              idNumber: '123456789',
+                              phoneNumber: '9123456789',
+                              address: 'Lisboa',
+                              profiles: [],
+                            ),
+                          ),
+                        );
+                      } else {
+                        // exibir mensagem de erro
+                      }
+                    }
+                  },
+                  child: Text('Entrar'),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
+

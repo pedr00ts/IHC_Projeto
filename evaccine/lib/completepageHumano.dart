@@ -1,3 +1,4 @@
+import 'package:evaccine/VacinasCompletas.dart';
 import 'package:evaccine/profilepage.dart';
 import 'package:evaccine/vacinashumanas.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'adicionarperfilfamiliapage.dart';
 import 'adicionarperfilfanimalpage.dart';
 import 'completepageAnimal.dart';
+import 'main.dart';
 import 'widget/profile_widget.dart';
 
 class Profile {
@@ -135,6 +137,7 @@ class CompletePageHumano extends StatelessWidget {
                     builder: (context) => CompletePageAnimal(
                       petName: 'Bobby',
                       chipNumber: '56781239',
+                      birthday: '16/05/2022',
                       petAddress: 'Lisboa',
                     ),
                   ),
@@ -173,6 +176,21 @@ class CompletePageHumano extends StatelessWidget {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
+            ListTile(
+              title: Text(
+                'Terminar Sessão',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EvaccinePage(
+                    ),
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),
@@ -198,7 +216,7 @@ class CompletePageHumano extends StatelessWidget {
             SizedBox(height: 10),
             Text('Data de nascimento: $birthDate'),
             SizedBox(height: 5),
-            Text('Número de identificação: $idNumber'),
+            Text('Número de utente: $idNumber'),
             SizedBox(height: 5),
             Text('Número de telefone: $phoneNumber'),
             SizedBox(height: 5),
@@ -209,7 +227,7 @@ class CompletePageHumano extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => VaccinesPage(),
+                    builder: (context) => VaccinesCompletePage(),
                   ),
                 );
               },

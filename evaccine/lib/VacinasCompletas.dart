@@ -3,6 +3,8 @@ import 'package:evaccine/adicionarvacinapessoa.dart';
 
 import 'adicionarperfilfamiliapage.dart';
 import 'adicionarperfilfanimalpage.dart';
+import 'completepageAnimal.dart';
+import 'completepageHumano.dart';
 import 'main.dart';
 import 'mudarPerfil.dart';
 
@@ -20,12 +22,12 @@ class Vacina {
   Vacina({required this.nome, required this.status});
 }
 
-class VaccinesPage extends StatefulWidget {
+class VaccinesCompletePage extends StatefulWidget {
   @override
-  _VaccinesPageState createState() => _VaccinesPageState();
+  _VaccinesCompletePageState createState() => _VaccinesCompletePageState();
 }
 
-class _VaccinesPageState extends State<VaccinesPage> {
+class _VaccinesCompletePageState extends State<VaccinesCompletePage> {
   final List<Vacina> planoNacional = [
     Vacina(nome: 'Vacina 1', status: StatusVacina.administrada),
     Vacina(nome: 'Vacina 2', status: StatusVacina.futura),
@@ -37,7 +39,6 @@ class _VaccinesPageState extends State<VaccinesPage> {
     Vacina(nome: 'Vacina 5', status: StatusVacina.futura),
     Vacina(nome: 'Vacina 6', status: StatusVacina.atraso),
   ]; // Lista de outras vacinas
-  late final List<Profile> profiles; // Lista de perfis adicionados
 
   List<Vacina> vacinasFiltradasPlanoNacional = [];
   List<Vacina> vacinasFiltradasOutras = [];
@@ -138,7 +139,7 @@ class _VaccinesPageState extends State<VaccinesPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MudarPerfilPage(
+                    builder: (context) => CompletePageHumano(
                       email: 'marialuisa@gmail.com',
                       name: 'Maria Luisa Oliveira',
                       birthDate: '12/03/1987',
@@ -160,7 +161,7 @@ class _VaccinesPageState extends State<VaccinesPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>MudarPerfilPage(
+                    builder: (context) =>CompletePageHumano(
                       email: '',
                       name: 'Joao Oliveira',
                       birthDate: '24/12/2022',
@@ -192,6 +193,25 @@ class _VaccinesPageState extends State<VaccinesPage> {
                 'Animais de Estimação',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
+            ),
+            ListTile(
+              title: Text(
+                'Bobby',
+                style: TextStyle(fontSize: 18),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CompletePageAnimal(
+                      petName: 'Bobby',
+                      chipNumber: '987654321234567',
+                      birthday: '16/05/2022',
+                      petAddress: 'Lisboa',
+                    ),
+                  ),
+                );
+              },
             ),
             ListTile(
               title: ElevatedButton(
@@ -369,6 +389,3 @@ class _VaccinesPageState extends State<VaccinesPage> {
     );
   }
 }
-
-
-

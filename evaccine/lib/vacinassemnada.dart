@@ -1,6 +1,12 @@
+import 'package:evaccine/perfilMariaPage.dart';
+import 'package:evaccine/profilepage.dart';
 import 'package:evaccine/vacinasaposUpload.dart';
 import 'package:flutter/material.dart';
 import 'package:evaccine/adicionarvacinapessoa.dart';
+
+import 'adicionarperfilfamiliapage.dart';
+import 'adicionarperfilfanimalpage.dart';
+import 'main.dart';
 
 enum StatusVacina {
   todas,
@@ -8,7 +14,6 @@ enum StatusVacina {
   futura,
   atraso,
 }
-
 class Vacina {
   final String nome;
   final StatusVacina status;
@@ -23,9 +28,37 @@ class VaccinesVaziasPage extends StatefulWidget {
 
 class _VaccinesVaziasPageState extends State<VaccinesVaziasPage> {
 
+  final List<Vacina> planoNacional = [
+  ]; // Lista de vacinas do Plano Nacional de Saúde
+
+  final List<Vacina> outrasVacinas = [
+  ]; // Lista de outras vacinas
+
   List<Vacina> vacinasFiltradasPlanoNacional = [];
   List<Vacina> vacinasFiltradasOutras = [];
   StatusVacina statusSelecionado = StatusVacina.todas;
+
+  @override
+  void initState() {
+    super.initState();
+    filtrarVacinas();
+  }
+
+  void filtrarVacinas() {
+    setState(() {
+      if (statusSelecionado == StatusVacina.todas) {
+        vacinasFiltradasPlanoNacional = [...planoNacional];
+        vacinasFiltradasOutras = [...outrasVacinas];
+      } else {
+        vacinasFiltradasPlanoNacional = planoNacional
+            .where((vacina) => vacina.status == statusSelecionado)
+            .toList();
+        vacinasFiltradasOutras = outrasVacinas
+            .where((vacina) => vacina.status == statusSelecionado)
+            .toList();
+      }
+    });
+  }
 
   String getStatusVacina(StatusVacina status) {
     switch (status) {
@@ -75,10 +108,164 @@ class _VaccinesVaziasPageState extends State<VaccinesVaziasPage> {
       appBar: AppBar(
         title: Text('Vacinas'),
       ),
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text(
+                'Menu',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              title: Text(
+                'Família',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+            ListTile(
+              title: Text(
+                'Maria Luisa Oliveira',
+                style: TextStyle(fontSize: 18),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfilePage(
+                      email: 'marialuisa@gmail.com',
+                      name: 'Maria Luisa Oliveira',
+                      birthDate: '12/03/1987',
+                      idNumber: '123456789',
+                      phoneNumber: '9123456789',
+                      address: 'Lisboa',
+                      profiles: [],
+                    ),
+                  ),
+                );
+              },
+            ),
+            ListTile(
+              title: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => NewFamilyProfilePage(),
+                    ),
+                  );
+                },
+                child: Text('Adicionar Perfil'),
+              ),
+            ),
+            Divider(),
+            ListTile(
+              title: Text(
+                'Animais de Estimação',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+            ListTile(
+              title: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => NewAnimalProfilePage(),
+                    ),
+                  );
+                },
+                child: Text('Adicionar Perfil'),
+              ),
+            ),
+            Divider(),
+            ListTile(
+              title: Text(
+                'Definição',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+            ListTile(
+              title: Text(
+                'Ajuda',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+            ListTile(
+              title: Text(
+                'Enviar feedback',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+            ListTile(
+              title: Text(
+                'Terminar Sessão',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EvaccinePage(
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Container(
+              padding: EdgeInsets.all(16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Filtrar por:',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  DropdownButton<StatusVacina>(
+                    value: statusSelecionado,
+                    onChanged: (StatusVacina? newValue) {
+                      if (newValue != null) {
+                        setState(() {
+                          statusSelecionado = newValue;
+                          filtrarVacinas();
+                        });
+                      }
+                    },
+                    items: [
+                      DropdownMenuItem<StatusVacina>(
+                        value: StatusVacina.todas,
+                        child: Text('Todas'),
+                      ),
+                      DropdownMenuItem<StatusVacina>(
+                        value: StatusVacina.administrada,
+                        child: Text('Administradas'),
+                      ),
+                      DropdownMenuItem<StatusVacina>(
+                        value: StatusVacina.futura,
+                        child: Text('Futuras'),
+                      ),
+                      DropdownMenuItem<StatusVacina>(
+                        value: StatusVacina.atraso,
+                        child: Text('Atraso'),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
@@ -90,42 +277,6 @@ class _VaccinesVaziasPageState extends State<VaccinesVaziasPage> {
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.grey,
-                        width: 1.0,
-                      ),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    child: DropdownButton<StatusVacina>(
-                      value: statusSelecionado,
-                      dropdownColor: Colors.blue, // Altere a cor aqui
-                      onChanged: (value) {
-                        setState(() {
-                          statusSelecionado = value!;
-                        });
-                      },
-                      items: [
-                        DropdownMenuItem<StatusVacina>(
-                          value: StatusVacina.todas,
-                          child: Text('Todas'),
-                        ),
-                        DropdownMenuItem<StatusVacina>(
-                          value: StatusVacina.administrada,
-                          child: Text('Administradas'),
-                        ),
-                        DropdownMenuItem<StatusVacina>(
-                          value: StatusVacina.futura,
-                          child: Text('Futuras'),
-                        ),
-                        DropdownMenuItem<StatusVacina>(
-                          value: StatusVacina.atraso,
-                          child: Text('Atraso'),
-                        ),
-                      ],
                     ),
                   ),
                 ],

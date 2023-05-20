@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'adicionarperfilfamiliapage.dart';
 import 'adicionarperfilfanimalpage.dart';
 import 'customprofilepage.dart';
+import 'main.dart';
 import 'mudarPerfil.dart';
 import 'profiledetailspage.dart';
 import 'widget/profile_widget.dart';
@@ -145,6 +146,21 @@ class PerfilMariaPage extends StatelessWidget {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
+            ListTile(
+              title: Text(
+                'Terminar Sessão',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EvaccinePage(
+                    ),
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),
@@ -179,7 +195,7 @@ class PerfilMariaPage extends StatelessWidget {
           SizedBox(height: 10),
           Text('Data de nascimento: $birthDate'),
           SizedBox(height: 5),
-          Text('Número de identificação: $idNumber'),
+          Text('Número de utente: $idNumber'),
           SizedBox(height: 5),
           Text('Número de telefone: $phoneNumber'),
           SizedBox(height: 5),

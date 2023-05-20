@@ -4,6 +4,7 @@ import 'package:evaccine/adicionarvacinaanimal.dart';
 
 import 'adicionarperfilfamiliapage.dart';
 import 'adicionarperfilfanimalpage.dart';
+import 'main.dart';
 import 'mudarPerfil.dart';
 
 class VaccinesAnimalAdicionadaPage extends StatefulWidget {
@@ -129,6 +130,7 @@ class _VaccinesAnimalAdicionadaPageState
                     builder: (context) => PerfilAnimalRegistado(
                       petName: 'Bobby',
                       chipNumber: '56781239',
+                      birthDay: '16/05/2022',
                       petAddress: 'Lisboa',
                     ),
                   ),
@@ -167,6 +169,21 @@ class _VaccinesAnimalAdicionadaPageState
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
+            ListTile(
+              title: Text(
+                'Terminar Sessão',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EvaccinePage(
+                    ),
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),
@@ -190,12 +207,24 @@ class _VaccinesAnimalAdicionadaPageState
                       });
                     }
                   },
-                  items: VaccineStatus.values.map((VaccineStatus status) {
-                    return DropdownMenuItem<VaccineStatus>(
-                      value: status,
-                      child: Text(status.toString().split('.').last),
-                    );
-                  }).toList(),
+                  items: [
+                    DropdownMenuItem<VaccineStatus>(
+                      value: VaccineStatus.todas,
+                      child: Text('Todas'),
+                    ),
+                    DropdownMenuItem<VaccineStatus>(
+                      value: VaccineStatus.administrada,
+                      child: Text('Administradas'),
+                    ),
+                    DropdownMenuItem<VaccineStatus>(
+                      value: VaccineStatus.futura,
+                      child: Text('Futuras'),
+                    ),
+                    DropdownMenuItem<VaccineStatus>(
+                      value: VaccineStatus.atraso,
+                      child: Text('Atraso'),
+                    ),
+                  ],
                 ),
               ],
             ),

@@ -10,6 +10,7 @@ class NewFamilyProfilePage extends StatefulWidget {
 }
 
 class _NewFamilyProfilePageState extends State<NewFamilyProfilePage> {
+  final _formKey = GlobalKey<FormState>();
   TextEditingController _nameController = TextEditingController();
   TextEditingController _birthDateController = TextEditingController();
   TextEditingController _idNumberController = TextEditingController();
@@ -19,37 +20,40 @@ class _NewFamilyProfilePageState extends State<NewFamilyProfilePage> {
   List<CustomProfilePage> profiles = []; // Lista de perfis
 
   void _addProfile() {
-    String name = _nameController.text;
-    String birthDate = _birthDateController.text;
-    String idNumber = _idNumberController.text;
-    String phoneNumber = _phoneNumberController.text;
-    String address = _addressController.text;
+    if (_formKey.currentState!.validate()) {
+      String name = _nameController.text;
+      String birthDate = _birthDateController.text;
+      String idNumber = _idNumberController.text;
+      String phoneNumber = _phoneNumberController.text;
+      String address = _addressController.text;
 
-    CustomProfilePage newPage = CustomProfilePage(
-      name: name,
-      birthDate: birthDate,
-      idNumber: idNumber,
-      phoneNumber: phoneNumber,
-      address: address,
-      profiles: profiles,
-    );
+      CustomProfilePage newPage = CustomProfilePage(
+        name: name,
+        birthDate: birthDate,
+        idNumber: idNumber,
+        phoneNumber: phoneNumber,
+        address: address,
+        profiles: profiles,
+      );
 
-    setState(() {
-      profiles.add(newPage);
-    });
+      setState(() {
+        profiles.add(newPage);
+      });
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => PerfilHumanoRegistado(
-          name: name,
-          birthDate: birthDate,
-          idNumber: idNumber,
-          phoneNumber: phoneNumber,
-          address: address, profiles: [],
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PerfilHumanoRegistado(
+            name: name,
+            birthDate: birthDate,
+            idNumber: idNumber,
+            phoneNumber: phoneNumber,
+            address: address,
+            profiles: [],
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 
   @override
@@ -66,13 +70,13 @@ class _NewFamilyProfilePageState extends State<NewFamilyProfilePage> {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(1930),
+      firstDate: DateTime(1900),
       lastDate: DateTime.now(),
     );
 
     if (picked != null) {
       setState(() {
-        _birthDateController.text = DateFormat('yyyy-MM-dd').format(picked);
+        _birthDateController.text = DateFormat('dd/MM/yyyy').format(picked);
       });
     }
   }
@@ -86,102 +90,153 @@ class _NewFamilyProfilePageState extends State<NewFamilyProfilePage> {
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(bottom: 8.0),
-                child: Text(
-                  'Nome:',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  'Adicione os campos com a informação necessária',
+                  style: TextStyle(
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              TextField(
-                controller: _nameController,
-              ),
-              SizedBox(height: 10),
-              Padding(
-                padding: EdgeInsets.only(bottom: 8.0),
-                child: Text(
-                  'Data de Nascimento:',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 8.0),
+                  child: Text(
+                    'Nome:',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-              TextField(
-                controller: _birthDateController,
-                onTap: () {
-                  FocusScope.of(context).requestFocus(FocusNode());
-                  _selectDate(context);
-                },
-                decoration: InputDecoration(
-                  suffixIcon: Icon(Icons.calendar_today),
+                TextFormField(
+                  controller: _nameController,
+                  decoration: InputDecoration(
+                    hintText: 'Nome',
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Campo obrigatório';
+                    }
+                    return null;
+                  },
                 ),
-              ),
-              SizedBox(height: 10),
-              Padding(
-                padding: EdgeInsets.only(bottom: 8.0),
-                child: Text(
-                  'Número de Utente:',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                SizedBox(height: 10),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 8.0),
+                  child: Text(
+                    'Data de Nascimento:',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-              TextField(
-                controller: _idNumberController,
-              ),
-              SizedBox(height: 10),
-              Padding(
-                padding: EdgeInsets.only(bottom: 8.0),
-                child: Text(
-                  'Número de Telemóvel:',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                TextFormField(
+                  controller: _birthDateController,
+                  keyboardType: TextInputType.datetime,
+                  decoration: InputDecoration(
+                    hintText: 'dd/mm/yyyy',
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.calendar_today),
+                      onPressed: () {
+                        _selectDate(context);
+                      },
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Campo obrigatório';
+                    }
+                    return null;
+                  },
                 ),
-              ),
-              SizedBox(height: 10),
-              InternationalPhoneNumberInput(
-                onInputChanged: (PhoneNumber number) {
-                  print(number.phoneNumber);
-                },
-                onInputValidated: (bool value) {
-                  // Update the UI or perform any other necessary actions based on the validation status.
-                },
-                selectorConfig: SelectorConfig(
-                  selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
-                  useEmoji: true,
+                SizedBox(height: 10),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 8.0),
+                  child: Text(
+                    'Número de Utente:',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
                 ),
-                ignoreBlank: false,
-                autoValidateMode: AutovalidateMode.onUserInteraction,
-                selectorTextStyle: TextStyle(color: Colors.black),
-                initialValue: PhoneNumber(isoCode: 'PT'),
-                textFieldController: _phoneNumberController,
-                formatInput: true,
-                keyboardType: TextInputType.phone,
-                inputBorder: OutlineInputBorder(),
-                hintText: 'Número de telemóvel',
-              ),
-              SizedBox(height: 10),
-              Padding(
-                padding: EdgeInsets.only(bottom: 8.0),
-                child: Text(
-                  'Morada:',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                TextFormField(
+                  controller: _idNumberController,
+                  decoration: InputDecoration(
+                    hintText: 'Número de Utente',
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Campo obrigatório';
+                    } else if (value.length != 9) {
+                      return 'O número de utente deve ter 9 dígitos';
+                    }
+                    return null;
+                  },
                 ),
-              ),
-              TextField(
-                controller: _addressController,
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  _addProfile();
-                },
-                child: Text('Adicionar Perfil'),
-              ),
-            ],
+                SizedBox(height: 10),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 8.0),
+                  child: Text(
+                    'Número de Telemóvel:',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                SizedBox(height: 20),
+                InternationalPhoneNumberInput(
+                  onInputChanged: (PhoneNumber number) {
+                    print(number.phoneNumber);
+                  },
+                  onInputValidated: (bool value) {},
+                  selectorConfig: SelectorConfig(
+                    selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+                    useEmoji: true,
+                  ),
+                  ignoreBlank: false,
+                  autoValidateMode: AutovalidateMode.onUserInteraction,
+                  selectorTextStyle: TextStyle(color: Colors.black),
+                  initialValue: PhoneNumber(isoCode: 'PT'),
+                  textFieldController: _phoneNumberController,
+                  formatInput: true,
+                  keyboardType: TextInputType.phone,
+                  inputBorder: OutlineInputBorder(),
+                  hintText: 'Número de telemóvel',
+                  onSaved: (PhoneNumber number) {
+                    // You can save the phone number here if needed
+                  },
+                ),
+                SizedBox(height: 10),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 8.0),
+                  child: Text(
+                    'Morada:',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                TextFormField(
+                  controller: _addressController,
+                  decoration: InputDecoration(
+                    hintText: 'Morada',
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Campo obrigatório';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    _addProfile();
+                  },
+                  child: Text('Adicionar Perfil'),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 }
+
+
 
 

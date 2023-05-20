@@ -1,35 +1,38 @@
-import 'package:evaccine/profilepage.dart';
+import 'package:evaccine/VacinasCompletas.dart';
+import 'package:evaccine/completepageHumano.dart';
+import 'package:evaccine/vacinasaposUpload.dart';
+import 'package:evaccine/vacinasaposadicionar.dart';
 import 'package:evaccine/vacinashumanas.dart';
+import 'package:evaccine/vacinassemnada.dart';
 import 'package:flutter/material.dart';
+
 
 import 'adicionarperfilfamiliapage.dart';
 import 'adicionarperfilfanimalpage.dart';
+import 'completepageAnimal.dart';
+import 'customprofilepage.dart';
 import 'main.dart';
+import 'mudarPerfil.dart';
+import 'profiledetailspage.dart';
 import 'widget/profile_widget.dart';
 
-class Profile {
-  final String name;
-  final String route;
-
-  Profile({required this.name, required this.route});
-}
-
-class MudarPerfilPage extends StatelessWidget {
+class PerfilJoaoPage extends StatelessWidget {
+  final String email;
   final String name;
   final String birthDate;
   final String idNumber;
   final String phoneNumber;
   final String address;
-  final List<Profile> profiles; // Lista de perfis adicionados
+  final List<CustomProfilePage> profiles; // Lista de perfis adicionados
 
-  MudarPerfilPage({
+  const PerfilJoaoPage({super.key,
+    required this.email,
     required this.name,
     required this.birthDate,
     required this.idNumber,
     required this.phoneNumber,
     required this.address,
     required this.profiles,
-    required String email,
   });
 
   @override
@@ -68,7 +71,7 @@ class MudarPerfilPage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MudarPerfilPage(
+                    builder: (context) => CompletePageHumano(
                       email: 'marialuisa@gmail.com',
                       name: 'Maria Luisa Oliveira',
                       birthDate: '12/03/1987',
@@ -90,7 +93,7 @@ class MudarPerfilPage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => MudarPerfilPage(
+                    builder: (context) =>CompletePageHumano(
                       email: '',
                       name: 'Joao Oliveira',
                       birthDate: '24/12/2022',
@@ -102,14 +105,6 @@ class MudarPerfilPage extends StatelessWidget {
                   ),
                 );
               },
-            ),
-            ...profiles.map(
-                  (profile) => ListTile(
-                title: Text(profile.name),
-                onTap: () {
-                  Navigator.pushNamed(context, profile.route);
-                },
-              ),
             ),
             ListTile(
               title: ElevatedButton(
@@ -130,6 +125,25 @@ class MudarPerfilPage extends StatelessWidget {
                 'Animais de Estimação',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
+            ),
+            ListTile(
+              title: Text(
+                'Bobby',
+                style: TextStyle(fontSize: 18),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CompletePageAnimal(
+                      petName: 'Bobby',
+                      chipNumber: '987654321234567',
+                      birthday: '16/05/2022',
+                      petAddress: 'Lisboa',
+                    ),
+                  ),
+                );
+              },
             ),
             ListTile(
               title: ElevatedButton(
@@ -181,48 +195,59 @@ class MudarPerfilPage extends StatelessWidget {
           ],
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ProfileWidget(
-              imagePath: 'https://via.placeholder.com/150',
-              onClicked: () async {},
-            ),
-            SizedBox(height: 20),
-            Text(
-              name,
-              style: TextStyle(fontSize: 20),
-            ),
-            SizedBox(height: 10),
-            Text(
-              'Informações adicionais:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 10),
-            Text('Data de nascimento: $birthDate'),
-            SizedBox(height: 5),
-            Text('Número de utente: $idNumber'),
-            SizedBox(height: 5),
-            Text('Número de telefone: $phoneNumber'),
-            SizedBox(height: 5),
-            Text('Endereço: $address'),
-            SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => VaccinesPage(),
-                  ),
-                );
-              },
-              child: Text('Vacinas'),
-            ),
-          ],
-        ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          /*CircleAvatar(
+          radius: 60,
+          backgroundImage: NetworkImage(
+            'https://via.placeholder.com/150', // Imagem de perfil padrão
+          ),
+        ),*/
+          ProfileWidget(
+            imagePath: 'https://via.placeholder.com/150',
+            onClicked: () async {},
+          ),
+          SizedBox(height: 20),
+          Text(
+            name,
+            style: TextStyle(fontSize: 20),
+          ),
+          SizedBox(height: 10),
+          Text(
+            email,
+            style: TextStyle(fontSize: 16),
+          ),
+          SizedBox(height: 30),
+          Text(
+            'Informações adicionais:',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 10),
+          Text('Data de nascimento: $birthDate'),
+          SizedBox(height: 5),
+          Text('Número de utente: $idNumber'),
+          SizedBox(height: 5),
+          Text('Número de telefone: $phoneNumber'),
+          SizedBox(height: 5),
+          Text('Endereço: $address'),
+          SizedBox(height: 16.0),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => VaccinesCompletePage()),
+              );
+            },
+            child: Text('Vacinas'),
+          ),
+        ],
       ),
+      /*floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        tooltip: 'Alterar foto de perfil',
+        child: Icon(Icons.photo_camera),
+      ),*/
     );
   }
 }

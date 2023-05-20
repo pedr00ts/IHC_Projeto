@@ -5,6 +5,7 @@ import 'package:evaccine/adicionarvacinapessoa.dart';
 
 import 'adicionarperfilfamiliapage.dart';
 import 'adicionarperfilfanimalpage.dart';
+import 'main.dart';
 
 enum StatusVacina {
   todas,
@@ -199,6 +200,21 @@ class _VaccinesAdicionaPageState extends State<VaccinesAdicionaPage> {
                 'Enviar feedback',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
+            ),
+            ListTile(
+              title: Text(
+                'Terminar Sessão',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EvaccinePage(
+                    ),
+                  ),
+                );
+              },
             ),
           ],
         ),

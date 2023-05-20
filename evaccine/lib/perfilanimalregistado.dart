@@ -7,18 +7,21 @@ import 'adicionarperfilfamiliapage.dart';
 import 'adicionarperfilfanimalpage.dart';
 import 'completepageAnimal.dart';
 import 'completepageHumano.dart';
+import 'main.dart';
 import 'mudarPerfil.dart';
 import 'widget/profile_widget.dart';
 
 class PerfilAnimalRegistado extends StatelessWidget {
   final String petName;
   final String chipNumber;
+  final String birthDay;
   final String petAddress;
 
   PerfilAnimalRegistado({
     required this.petName,
     required this.chipNumber,
     required this.petAddress,
+    required this.birthDay,
   });
   @override
   Widget build(BuildContext context) {
@@ -123,6 +126,7 @@ class PerfilAnimalRegistado extends StatelessWidget {
                     builder: (context) => CompletePageAnimal(
                       petName: 'Bobby',
                       chipNumber: '56781239',
+                      birthday: '16/05/2022',
                       petAddress: 'Lisboa',
                     ),
                   ),
@@ -161,6 +165,21 @@ class PerfilAnimalRegistado extends StatelessWidget {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
+            ListTile(
+              title: Text(
+                'Terminar Sessão',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EvaccinePage(
+                    ),
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),
@@ -185,6 +204,8 @@ class PerfilAnimalRegistado extends StatelessWidget {
             ),
             SizedBox(height: 5),
             Text('Número do Chip: $chipNumber'),
+            SizedBox(height: 5),
+            Text('Data de nascimento: $birthDay'),
             SizedBox(height: 5),
             Text('Endereço: $petAddress'),
             SizedBox(height: 16.0),

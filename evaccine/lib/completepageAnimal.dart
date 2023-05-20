@@ -1,3 +1,4 @@
+import 'package:evaccine/main.dart';
 import 'package:evaccine/profilepage.dart';
 import 'package:evaccine/vacinasanimais.dart';
 import 'package:evaccine/vacinasanimalaposinscrever.dart';
@@ -12,11 +13,13 @@ import 'widget/profile_widget.dart';
 class CompletePageAnimal extends StatelessWidget {
   final String petName;
   final String chipNumber;
+  final String birthday;
   final String petAddress;
 
   CompletePageAnimal({
     required this.petName,
     required this.chipNumber,
+    required this.birthday,
     required this.petAddress,
   });
 
@@ -122,7 +125,8 @@ class CompletePageAnimal extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) => CompletePageAnimal(
                       petName: 'Bobby',
-                      chipNumber: '56781239',
+                      chipNumber: '987654321234567',
+                      birthday: '16/05/2022',
                       petAddress: 'Lisboa',
                     ),
                   ),
@@ -160,6 +164,21 @@ class CompletePageAnimal extends StatelessWidget {
                 'Enviar feedback',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
+            ),
+            ListTile(
+              title: Text(
+                'Terminar Sessão',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EvaccinePage(
+                    ),
+                  ),
+                );
+              },
             ),
           ],
         ),
