@@ -183,13 +183,11 @@ class _NewFamilyProfilePageState extends State<NewFamilyProfilePage> {
                   onInputChanged: (PhoneNumber number) {
                     print(number.phoneNumber);
                   },
-                  onInputValidated: (bool value) {},
                   selectorConfig: SelectorConfig(
                     selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
                     useEmoji: true,
                   ),
-                  ignoreBlank: false,
-                  autoValidateMode: AutovalidateMode.onUserInteraction,
+                  ignoreBlank: true, // Permitir campo em branco
                   selectorTextStyle: TextStyle(color: Colors.black),
                   initialValue: PhoneNumber(isoCode: 'PT'),
                   textFieldController: _phoneNumberController,
@@ -200,7 +198,13 @@ class _NewFamilyProfilePageState extends State<NewFamilyProfilePage> {
                   onSaved: (PhoneNumber number) {
                     // You can save the phone number here if needed
                   },
+                  validator: (value) {
+                    // Validar o número de telemóvel aqui, se necessário
+                    // Retorna null se for válido, ou uma mensagem de erro caso contrário
+                    return null;
+                  },
                 ),
+
                 SizedBox(height: 10),
                 Padding(
                   padding: EdgeInsets.only(bottom: 8.0),

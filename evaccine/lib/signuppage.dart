@@ -231,13 +231,11 @@ class _SignUpPageState extends State<SignUpPage> {
                       onInputChanged: (PhoneNumber number) {
                         print(number.phoneNumber);
                       },
-                      onInputValidated: (bool value) {},
                       selectorConfig: SelectorConfig(
                         selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
                         useEmoji: true,
                       ),
-                      ignoreBlank: false,
-                      autoValidateMode: AutovalidateMode.onUserInteraction,
+                      ignoreBlank: true, // Permitir campo em branco
                       selectorTextStyle: TextStyle(color: Colors.black),
                       initialValue: PhoneNumber(isoCode: 'PT'),
                       textFieldController: phoneController,
@@ -247,6 +245,11 @@ class _SignUpPageState extends State<SignUpPage> {
                       hintText: 'Número de telemóvel',
                       onSaved: (PhoneNumber number) {
                         // You can save the phone number here if needed
+                      },
+                      validator: (value) {
+                        // Validar o número de telemóvel aqui, se necessário
+                        // Retorna null se for válido, ou uma mensagem de erro caso contrário
+                        return null;
                       },
                     ),
                     SizedBox(height: 8.0),
